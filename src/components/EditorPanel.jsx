@@ -1,4 +1,4 @@
-import { Box, Button, Divider, List, ListItemButton, ListItemText, Stack, TextField, Typography } from '@mui/material'
+import { Button, List, ListItemButton, ListItemText, TextField, Typography, Box, Grid } from '@mui/material'
 
 function EditorPanel({
   files,
@@ -11,28 +11,27 @@ function EditorPanel({
   setActiveFileId,
 }) {
   return (
-    <Box
+    <Grid
       component="main"
       sx={{
-        display: 'flex',
+        display: 'grid',
+        gridTemplateColumns: '220px minmax(0, 1fr)',
         minWidth: 0,
         height: '100vh',
         background: '#0f172a',
       }}
     >
-      <Box
+      <Grid
         component="aside"
         sx={{
-          width: 220,
-          minWidth: 220,
           background: '#111827',
           borderRight: '1px solid rgba(148,163,184,0.2)',
           p: 1.5,
           color: '#e2e8f0',
         }}
       >
-        <Box sx={{ mb: 2 }}>
-          <Box
+        <Grid sx={{ mb: 2 }}>
+          <Grid
             component="span"
             sx={{
               display: 'inline-flex',
@@ -49,20 +48,11 @@ function EditorPanel({
             }}
           >
             React Playground
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
 
-        <Box sx={{ mb: 2 }}>
-          <Typography
-            variant="caption"
-            sx={{
-              display: 'block',
-              color: '#94a3b8',
-              letterSpacing: 1,
-              textTransform: 'uppercase',
-              mb: 1,
-            }}
-          >
+        <Grid sx={{ mb: 2 }}>
+          <Typography variant="caption" sx={{ display: 'block', color: '#94a3b8', letterSpacing: 1, textTransform: 'uppercase', mb: 1 }}>
             src
           </Typography>
           <List disablePadding sx={{ display: 'flex', flexDirection: 'column', gap: 0.6 }}>
@@ -79,45 +69,20 @@ function EditorPanel({
                     py: 0.8,
                     color: '#dbeafe',
                     background: file.id === activeFileId ? 'rgba(148,163,184,0.12)' : 'transparent',
-                    '&.Mui-selected': {
-                      background: 'rgba(148,163,184,0.12)',
-                    },
+                    '&.Mui-selected': { background: 'rgba(148,163,184,0.12)' },
                   }}
                 >
-                  <Box
-                    component="span"
-                    sx={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: 1,
-                      background: 'rgba(59,130,246,0.18)',
-                      color: '#bfdbfe',
-                      display: 'grid',
-                      placeItems: 'center',
-                      fontSize: 10,
-                      fontWeight: 700,
-                      mr: 1,
-                    }}
-                  >
+                  <Grid component="span" sx={{ width: 22, height: 22, borderRadius: 1, background: 'rgba(59,130,246,0.18)', color: '#bfdbfe', display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 700, mr: 1 }}>
                     {file.language === 'css' ? '{ }' : 'JS'}
-                  </Box>
+                  </Grid>
                   <ListItemText primary={file.name} sx={{ my: 0 }} />
                 </ListItemButton>
               ))}
           </List>
-        </Box>
+        </Grid>
 
-        <Box>
-          <Typography
-            variant="caption"
-            sx={{
-              display: 'block',
-              color: '#94a3b8',
-              letterSpacing: 1,
-              textTransform: 'uppercase',
-              mb: 1,
-            }}
-          >
+        <Grid>
+          <Typography variant="caption" sx={{ display: 'block', color: '#94a3b8', letterSpacing: 1, textTransform: 'uppercase', mb: 1 }}>
             root
           </Typography>
           <List disablePadding sx={{ display: 'flex', flexDirection: 'column', gap: 0.6 }}>
@@ -134,37 +99,21 @@ function EditorPanel({
                     py: 0.8,
                     color: '#dbeafe',
                     background: file.id === activeFileId ? 'rgba(148,163,184,0.12)' : 'transparent',
-                    '&.Mui-selected': {
-                      background: 'rgba(148,163,184,0.12)',
-                    },
+                    '&.Mui-selected': { background: 'rgba(148,163,184,0.12)' },
                   }}
                 >
-                  <Box
-                    component="span"
-                    sx={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: 1,
-                      background: 'rgba(59,130,246,0.18)',
-                      color: '#bfdbfe',
-                      display: 'grid',
-                      placeItems: 'center',
-                      fontSize: 10,
-                      fontWeight: 700,
-                      mr: 1,
-                    }}
-                  >
+                  <Box component="span" sx={{ width: 22, height: 22, borderRadius: 1, background: 'rgba(59,130,246,0.18)', color: '#bfdbfe', display: 'grid', placeItems: 'center', fontSize: 10, fontWeight: 700, mr: 1 }}>
                     {file.language === 'json' ? 'J' : 'F'}
                   </Box>
                   <ListItemText primary={file.name} sx={{ my: 0 }} />
                 </ListItemButton>
               ))}
           </List>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
 
-      <Box sx={{ flex: 1,  display: 'flex', flexDirection: 'column', background: '#0f172a' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.2, pt: 1, background: '#111827', borderBottom: '1px solid rgba(148,163,184,0.16)', minHeight: 48, overflowX: 'auto' }}>
+      <Grid sx={{ minWidth: 0, display: 'grid', gridTemplateRows: '48px minmax(0, 1fr)', background: '#0f172a' }}>
+        <Grid sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.2, pt: 1, background: '#111827', borderBottom: '1px solid rgba(148,163,184,0.16)', overflowX: 'auto' }}>
           {openTabs.map((tabId) => {
             const tabFile = files.find((file) => file.id === tabId)
             if (!tabFile) return null
@@ -184,11 +133,10 @@ function EditorPanel({
                   fontSize: 12,
                   textTransform: 'none',
                   justifyContent: 'space-between',
-                  '& .MuiButton-startIcon': { margin: 0 },
                 }}
               >
                 {tabFile.name}
-                <Box
+                <Grid
                   component="span"
                   onClick={(event) => {
                     event.stopPropagation()
@@ -197,13 +145,13 @@ function EditorPanel({
                   sx={{ ml: 1, opacity: 0.7, fontSize: 16 }}
                 >
                   ×
-                </Box>
+                </Grid>
               </Button>
             )
           })}
-        </Box>
+        </Grid>
 
-        <Box sx={{ flex: 1, p: 1.5, minHeight: 0 }}>
+        <Grid sx={{ minHeight: 0, p: 1.5 }}>
           <TextField
             multiline
             fullWidth
@@ -231,14 +179,12 @@ function EditorPanel({
                 lineHeight: 1.65,
                 resize: 'none',
               },
-              '& .MuiOutlinedInput-notchedOutline': {
-                border: 'none',
-              },
+              '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
             }}
           />
-        </Box>
-      </Box>
-    </Box>
+        </Grid>
+      </Grid>
+    </Grid>
   )
 }
 
