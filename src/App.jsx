@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Grid, Paper } from '@mui/material'
 import EditorPanel from './components/EditorPanel'
 import ProductPreview from './components/ProductPreview'
@@ -37,9 +37,6 @@ function App() {
   const [files, setFiles] = useState(initialFiles)
   const [activeFileId, setActiveFileId] = useState('product-html')
   const [openTabs, setOpenTabs] = useState(['product-html', 'product-css', 'product-js'])
-  const [editorWidth, setEditorWidth] = useState(820)
-  const shellRef = useRef(null)
-  const draggingRef = useRef(false)
 
   const activeFile = files.find((file) => file.id === activeFileId) || files[0]
 
@@ -88,38 +85,18 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    const handlePointerMove = (event) => {
-      if (!draggingRef.current || !shellRef.current) return
-
-      const rect = shellRef.current.getBoundingClientRect()
-      const leftOffset = 220
-      const minEditorWidth = 520
-      const maxEditorWidth = rect.width - leftOffset - 340
-      const nextWidth = Math.min(
-        Math.max(event.clientX - rect.left - leftOffset, minEditorWidth),
-        maxEditorWidth,
-      )
-
-      setEditorWidth(nextWidth)
-    }
-
-    const handlePointerUp = () => {
-      draggingRef.current = false
-    }
-
-    window.addEventListener('pointermove', handlePointerMove)
-    window.addEventListener('pointerup', handlePointerUp)
-
-    return () => {
-      window.removeEventListener('pointermove', handlePointerMove)
-      window.removeEventListener('pointerup', handlePointerUp)
-    }
-  }, [])
-
   return (
-    <Grid container ref={shellRef} style={{ '--editor-width': `${editorWidth}px` }}>
-      <Grid size="8">
+    <Grid
+      container
+      sx={{
+        width: '100vw',
+        minHeight: '100vh',
+        m: 0,
+        p: 0,
+        overflow: 'hidden',
+      }}
+    >
+      <Grid size="8" sx={{ minWidth: '66vw' }}>
         <EditorPanel
           files={files}
           activeFileId={activeFileId}
@@ -133,14 +110,7 @@ function App() {
         />
       </Grid>
 
-      <Grid
-        onPointerDown={() => {
-          draggingRef.current = true
-        }}
-        aria-label="Resize editor and preview panes"
-        role="separator"
-      />
-      <Grid size="3">
+      <Grid size="4" sx={{ minWidth: '32vw' }}>
         <Paper
           elevation={0}
           sx={{
@@ -150,7 +120,9 @@ function App() {
             p: 2,
             display: 'flex',
             flexDirection: 'column',
-
+            width: '100%',
+            height: '100vh',
+            m: 0,
           }}
         >
           <Grid sx={{ mb: 1.5, display: 'flex', alignItems: 'center' }}>

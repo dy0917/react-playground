@@ -1,14 +1,15 @@
 function ProductPreview() {
   return (
-    <main className="product-panel">
-      <div className="product-window">
+    <main className="product-panel" style={{ width: '100%', height: '100%', minHeight: 0, padding: 0 }}>
+      <div className="product-window" style={{ width: '100%', height: '100%', minHeight: 0, borderRadius: 0 }}>
         <iframe
           title="Product catalog preview"
           src="http://127.0.0.1:5500/productCodeStore/index.html"
           style={{
             display: 'block',
             width: '100%',
-            height: '760px',
+            height: '100%',
+            minHeight: 0,
             border: 0,
             background: '#f4f5ef',
           }}
