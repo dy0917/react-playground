@@ -4,6 +4,9 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 const fileMap = {
+  'product-html': 'productCodeStore/index.html',
+  'product-css': 'productCodeStore/styles.css',
+  'product-js': 'productCodeStore/app.js',
   app: 'src/components/Product/App.jsx',
   data: 'src/components/Product/data.js',
   styles: 'src/components/Product/styles.css',

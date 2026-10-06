@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f5ef" />
+    <title>Product Code Store</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <div class="brand"><span class="brand-mark" aria-hidden="true">P</span><span>Product Code Store</span></div>
+        <span class="header-note">Catalog workspace</span>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div>
+            <p class="eyebrow">Inventory</p>
+            <h1 id="page-title">Product catalog</h1>
+            <p class="subtitle">Keep your product codes organized and easy to find.</p>
+          </div>
+          <button class="primary-button" id="open-dialog" type="button"><span aria-hidden="true">+</span> Add product</button>
+        </section>
+
+        <section aria-label="Product list">
+          <div class="toolbar">
+            <div class="search-wrap">
+              <span aria-hidden="true">⌕</span>
+              <input class="control" id="search" type="search" placeholder="Search name or product code" aria-label="Search name or product code" />
+            </div>
+            <select class="control" id="category-filter" aria-label="Filter by category">
+              <option value="">All categories</option>
+            </select>
+          </div>
+          <div class="summary"><span id="result-count">0 products</span><span>Saved in this browser</span></div>
+          <div class="table-frame">
+            <table>
+              <thead><tr><th scope="col">Product</th><th scope="col">Product code</th><th scope="col">Category</th><th scope="col">Status</th></tr></thead>
+              <tbody id="product-list"></tbody>
+            </table>
+            <div class="empty" id="empty-state" hidden>No products found. Add a product to get started.</div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="product-dialog">
+      <form class="dialog-content" id="product-form">
+        <div class="dialog-heading"><h2>Add a product</h2><button class="close-button" id="close-dialog" type="button" aria-label="Close">&times;</button></div>
+        <label for="product-name">Product name</label>
+        <input class="control" id="product-name" name="name" required maxlength="60" placeholder="e.g. Canvas tote bag" />
+        <label for="product-code">Product code</label>
+        <input class="control" id="product-code" name="code" required maxlength="24" placeholder="e.g. BAG-104" />
+        <label for="product-category">Category</label>
+        <input class="control" id="product-category" name="category" required maxlength="32" placeholder="e.g. Accessories" />
+        <div class="dialog-actions"><button class="secondary-button" id="cancel-dialog" type="button">Cancel</button><button class="primary-button" type="submit">Save product</button></div>
+      </form>
+    </dialog>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
