@@ -21,7 +21,7 @@ const defaultProduct = {
   ],
 }
 
-const initialFiles = [
+const starterFiles = [
   {
     id: 'app',
     name: 'App.jsx',
@@ -56,6 +56,8 @@ const initialFiles = [
   },
 ]
 
+const initialFiles = starterFiles
+
 const parseProductData = (source) => {
   const trimmed = source.trim()
 
@@ -80,9 +82,9 @@ const parseProductData = (source) => {
         stats:
           Array.isArray(result.stats) && result.stats.length
             ? result.stats.map((stat) => ({
-              label: stat.label || 'Metric',
-              value: stat.value || '0',
-            }))
+                label: stat.label || 'Metric',
+                value: stat.value || '0',
+              }))
             : defaultProduct.stats,
       }
     }
@@ -139,6 +141,27 @@ function App() {
     }
   }
 
+  const handleRun = async () => {
+    try {
+      const response = await fetch('/api/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ files }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Save failed')
+      }
+
+      window.location.reload()
+    } catch (error) {
+      console.error('Run failed:', error)
+      alert('Unable to save to the actual project files. Check the dev server.')
+    }
+  }
+
   useEffect(() => {
     const handlePointerMove = (event) => {
       if (!draggingRef.current || !shellRef.current) return
@@ -169,11 +192,7 @@ function App() {
   }, [])
 
   return (
-    <Grid container 
-      ref={shellRef}
-
-      style={{ '--editor-width': `${editorWidth}px` }}
-    >
+    <Grid container ref={shellRef} style={{ '--editor-width': `${editorWidth}px` }}>
       <Grid size={8}>
         <EditorPanel
           files={files}
@@ -184,9 +203,11 @@ function App() {
           closeTab={closeTab}
           updateFileContent={updateFileContent}
           setActiveFileId={setActiveFileId}
+          onRun={handleRun}
         />
       </Grid>
-      <Grid 
+
+      <Grid
         onPointerDown={() => {
           draggingRef.current = true
         }}

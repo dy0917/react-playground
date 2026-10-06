@@ -9,6 +9,7 @@ function EditorPanel({
   closeTab,
   updateFileContent,
   setActiveFileId,
+  onRun,
 }) {
   return (
     <Grid
@@ -113,42 +114,63 @@ function EditorPanel({
       </Grid>
 
       <Grid sx={{ minWidth: 0, display: 'grid', gridTemplateRows: '48px minmax(0, 1fr)', background: '#0f172a' }}>
-        <Grid sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.2, pt: 1, background: '#111827', borderBottom: '1px solid rgba(148,163,184,0.16)', overflowX: 'auto' }}>
-          {openTabs.map((tabId) => {
-            const tabFile = files.find((file) => file.id === tabId)
-            if (!tabFile) return null
+        <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, px: 1.2, pt: 1, background: '#111827', borderBottom: '1px solid rgba(148,163,184,0.16)', overflowX: 'auto' }}>
+          <Grid sx={{ display: 'flex', alignItems: 'center', gap: 1, overflowX: 'auto', flex: 1 }}>
+            {openTabs.map((tabId) => {
+              const tabFile = files.find((file) => file.id === tabId)
+              if (!tabFile) return null
 
-            return (
-              <Button
-                key={tabId}
-                variant={tabId === activeFileId ? 'contained' : 'text'}
-                onClick={() => setActiveFileId(tabId)}
-                sx={{
-                  minWidth: 0,
-                  borderRadius: '8px 8px 0 0',
-                  px: 1.2,
-                  py: 0.8,
-                  color: tabId === activeFileId ? '#fff' : '#cbd5e1',
-                  background: tabId === activeFileId ? '#0f172a' : '#1f2937',
-                  fontSize: 12,
-                  textTransform: 'none',
-                  justifyContent: 'space-between',
-                }}
-              >
-                {tabFile.name}
-                <Grid
-                  component="span"
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    closeTab(tabId)
+              return (
+                <Button
+                  key={tabId}
+                  variant={tabId === activeFileId ? 'contained' : 'text'}
+                  onClick={() => setActiveFileId(tabId)}
+                  sx={{
+                    minWidth: 0,
+                    borderRadius: '8px 8px 0 0',
+                    px: 1.2,
+                    py: 0.8,
+                    color: tabId === activeFileId ? '#fff' : '#cbd5e1',
+                    background: tabId === activeFileId ? '#0f172a' : '#1f2937',
+                    fontSize: 12,
+                    textTransform: 'none',
+                    justifyContent: 'space-between',
                   }}
-                  sx={{ ml: 1, opacity: 0.7, fontSize: 16 }}
                 >
-                  ×
-                </Grid>
-              </Button>
-            )
-          })}
+                  {tabFile.name}
+                  <Grid
+                    component="span"
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      closeTab(tabId)
+                    }}
+                    sx={{ ml: 1, opacity: 0.7, fontSize: 16 }}
+                  >
+                    ×
+                  </Grid>
+                </Button>
+              )
+            })}
+          </Grid>
+
+          <Button
+            variant="contained"
+            onClick={onRun}
+            sx={{
+              background: '#7c3aed',
+              color: '#fff',
+              borderRadius: 999,
+              px: 1.5,
+              py: 0.7,
+              fontSize: 12,
+              fontWeight: 700,
+              textTransform: 'none',
+              minWidth: 0,
+              '&:hover': { background: '#6d28d9' },
+            }}
+          >
+            Run
+          </Button>
         </Grid>
 
         <Grid sx={{ minHeight: 0, p: 1.5 }}>
