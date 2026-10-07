@@ -12,18 +12,10 @@ function EditorPanel({
   onRun,
 }) {
   return (
-    <Grid
-      component="main"
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: '220px minmax(0, 1fr)',
-        minWidth: 0,
-        height: '100vh',
-        background: '#0f172a',
-      }}
-    >
+    <Grid container sx={{ height: '100vh', minHeight: 0, overflow: 'hidden' }}>
       <Grid
         component="aside"
+        size={4}
         sx={{
           background: '#111827',
           borderRight: '1px solid rgba(148,163,184,0.2)',
@@ -31,7 +23,7 @@ function EditorPanel({
           color: '#e2e8f0',
         }}
       >
-        <Grid sx={{ mb: 2 }}>
+        <Grid>
           <Grid
             component="span"
             sx={{
@@ -113,7 +105,7 @@ function EditorPanel({
         </Grid>
       </Grid>
 
-      <Grid sx={{ minWidth: 0, display: 'grid', gridTemplateRows: '48px minmax(0, 1fr)', background: '#0f172a' }}>
+      <Grid size={8} sx={{ minWidth: 0, minHeight: 0, height: '100%', display: 'grid', gridTemplateRows: '48px minmax(0, 1fr)', background: '#0f172a', overflow: 'hidden' }}>
         <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, px: 1.2, pt: 1, background: '#111827', borderBottom: '1px solid rgba(148,163,184,0.16)', overflowX: 'auto' }}>
           <Grid sx={{ display: 'flex', alignItems: 'center', gap: 1, overflowX: 'auto', flex: 1 }}>
             {openTabs.map((tabId) => {
@@ -173,7 +165,7 @@ function EditorPanel({
           </Button>
         </Grid>
 
-        <Grid sx={{ minHeight: 0, p: 1.5 }}>
+        <Grid sx={{ minHeight: 0, p: 1.5, overflow: 'hidden' }}>
           <TextField
             multiline
             fullWidth
@@ -184,6 +176,7 @@ function EditorPanel({
               height: '100%',
               '& .MuiInputBase-root': {
                 height: '100%',
+                minHeight: 0,
                 alignItems: 'flex-start',
                 background: '#0b1120',
                 color: '#e2e8f0',
@@ -200,6 +193,10 @@ function EditorPanel({
                 fontSize: 14,
                 lineHeight: 1.65,
                 resize: 'none',
+                overflowY: 'auto !important',
+                overflowX: 'auto !important',
+                height: '100% !important',
+                minHeight: 0,
               },
               '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
             }}

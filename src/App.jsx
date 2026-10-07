@@ -89,14 +89,17 @@ function App() {
     <Grid
       container
       sx={{
-        width: '100vw',
+        position: 'fixed',
+        inset: 0,
+        width: 'auto',
+        height: '100vh',
         minHeight: '100vh',
         m: 0,
         p: 0,
         overflow: 'hidden',
       }}
     >
-      <Grid size="8" sx={{ minWidth: '66vw' }}>
+      <Grid size={8} sx={{ minWidth: 0 }}>
         <EditorPanel
           files={files}
           activeFileId={activeFileId}
@@ -110,7 +113,7 @@ function App() {
         />
       </Grid>
 
-      <Grid size="4" sx={{ minWidth: '32vw' }}>
+      <Grid size={4} sx={{ minWidth: 0 }}>
         <Paper
           elevation={0}
           sx={{
