@@ -8,8 +8,9 @@
     "dev": "node --watch server.js"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "^3.1147.0",
+    "@anthropic-ai/sdk": "^0.131.0",
     "dotenv": "^16.4.7",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "openai": "^7.30.0"
   }
 }

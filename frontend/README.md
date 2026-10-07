@@ -26,6 +26,6 @@ Optional backend settings include `GEMINI_MODEL`, `PORT`, `HOST`, and `APP_URL`.
 
 ## Configure Amazon Bedrock
 
-Install the backend dependencies, then set `LLM_PROVIDER=bedrock` in `backend/.env` to use Bedrock instead of Gemini. The default Bedrock model is `amazon.nova-lite-v1:0`; override it with `BEDROCK_MODEL_ID` if needed.
+Set `LLM_PROVIDER=bedrock` in `backend/.env` to use Amazon Bedrock instead of Gemini. Configure `OPENAI_API_KEY` with a Bedrock API key and optionally set `OPENAI_BASE_URL` to the Bedrock Mantle Responses API endpoint (for example, `https://bedrock-mantle.ap-southeast-2.api.aws/v1`). If no base URL is set, the backend derives it from `AWS_REGION`. The default model is `anthropic.claude-haiku-4-5`; override it with `OPENAI_MODEL` if needed. Existing `ANTHROPIC_API_KEY`, `ANTHROPIC_BASE_URL`, `ANTHROPIC_MODEL`, and `ANTHROPIC_WORKSPACE_ID` settings are accepted as fallbacks during migration.
 
-Configure the AWS SDK credential chain for the backend process (for example, an AWS profile for local development or an IAM role in AWS), set `AWS_REGION` to a region where the model is available, and grant the identity `bedrock:InvokeModel` permission. Gemini remains the default when `LLM_PROVIDER` is unset.
+The backend uses the OpenAI SDK's streaming Responses API and collects the text before validating and saving the generated files. Bedrock API-key usage requires permission to invoke the model through the Bedrock Mantle endpoint. Gemini remains the default when `LLM_PROVIDER` is unset.

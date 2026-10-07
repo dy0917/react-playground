@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import { Buffer } from 'node:buffer'
-import { generatePageWithBedrock } from './helper/AWShelper.js'
+import { generatePageWithOpenAI } from './helper/openAIhelper.js'
 import { mkdir, mkdtemp, rename, rm, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
@@ -159,7 +159,7 @@ export function createApp() {
       const provider = (process.env.LLM_PROVIDER || 'gemini').trim().toLowerCase()
       let files
       if (provider === 'bedrock') {
-        files = await generatePageWithBedrock(requirement.trim(), generationPrompt)
+        files = await generatePageWithOpenAI(requirement.trim(), generationPrompt)
       } else if (provider === 'gemini') {
         files = await generatePage(requirement.trim())
       } else {
