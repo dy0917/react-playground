@@ -3,6 +3,7 @@ import { Grid, Paper } from '@mui/material'
 import EditorPanel from './components/EditorPanel'
 import ProductPreview from './components/ProductPreview'
 import ChatWidget from './components/ChatWidget'
+import usePreviewContext from './contexts/usePreviewContext'
 import htmlSource from '../../productCodeStore/index.html?raw'
 import stylesSource from '../../productCodeStore/styles.css?raw'
 import scriptSource from '../../productCodeStore/app.js?raw'
@@ -38,7 +39,7 @@ function App() {
   const [files, setFiles] = useState(initialFiles)
   const [activeFileId, setActiveFileId] = useState('product-html')
   const [openTabs, setOpenTabs] = useState(['product-html', 'product-css', 'product-js'])
-  const [previewVersion, setPreviewVersion] = useState(0)
+  const { dispatch } = usePreviewContext()
 
   const activeFile = files.find((file) => file.id === activeFileId) || files[0]
 
@@ -64,7 +65,7 @@ function App() {
           : file,
       ),
     )
-    setPreviewVersion((version) => version + 1)
+    dispatch({ type: 'generated' })
   }
 
   const openFile = (fileId) => {
@@ -178,7 +179,7 @@ function App() {
               boxShadow: '0 12px 30px rgba(15,23,42,0.08)',
             }}
           >
-            <ProductPreview version={previewVersion} />
+            <ProductPreview />
           </Grid>
         </Paper>
       </Grid>

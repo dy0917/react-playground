@@ -1,57 +1,124 @@
-/* Reset a tiny bit so it looks the same on all browsers */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+      :root {
+        color-scheme: light;
+        font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+        color: #172421;
+        background: #f4f5ef;
+        font-synthesis: none;
+      }
 
-/* Basic page layout */
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.5;
-    background: #f0f4f8;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+      * { box-sizing: border-box; }
 
-/* Header & footer styling */
-header, footer {
-    background: #004e89;
-    color: #fff;
-    text-align: center;
-    padding: 1rem;
-}
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(ellipse at 95% 0%, rgba(236, 177, 106, 0.19), transparent 32rem),
+          #f4f5ef;
+      }
 
-/* Main content */
-main {
-    flex: 1;                 /* push footer to the bottom */
-    max-width: 600px;
-    margin: 2rem auto;
-    text-align: center;
-}
+      button, input, select { font: inherit; }
 
-/* Paragraph that shows the counter */
-#counter {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-}
+      .shell { width: min(1080px, calc(100% - 40px)); margin: 0 auto; }
 
-/* Button styling */
-button {
-    font-size: 1rem;
-    padding: 0.6rem 1.2rem;
-    background: #0077b6;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-button:hover {
-    background: #0096c7;
-}
-button:active {
-    background: #023e8a;
-}
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 76px;
+        border-bottom: 1px solid #dce1d9;
+      }
+
+      .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; }
+      .brand-mark {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 9px;
+        background: #176b56;
+        color: white;
+        font-size: 17px;
+      }
+      .header-note { color: #6d7972; font-size: 13px; }
+
+      main { padding: 45px 0 60px; }
+      .intro { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
+      .eyebrow { margin: 0 0 8px; color: #176b56; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; }
+      h1 { margin: 0; font-size: clamp(28px, 5vw, 38px); letter-spacing: 0; }
+      .subtitle { margin: 9px 0 0; color: #66736c; font-size: 14px; }
+
+      .primary-button {
+        display: inline-flex;
+        min-height: 42px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 15px;
+        border: 0;
+        border-radius: 6px;
+        background: #176b56;
+        color: white;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .primary-button:hover { background: #105640; }
+
+      .toolbar { display: flex; gap: 10px; margin-bottom: 14px; }
+      .search-wrap { position: relative; flex: 1; }
+      .search-wrap span { position: absolute; top: 50%; left: 13px; color: #7b8880; transform: translateY(-50%); }
+      .control {
+        width: 100%;
+        height: 42px;
+        padding: 0 12px;
+        border: 1px solid #d9dfd8;
+        border-radius: 6px;
+        background: #fff;
+        color: #172421;
+        outline: none;
+      }
+      .search-wrap .control { padding-left: 37px; }
+      .control:focus { border-color: #176b56; box-shadow: 0 0 0 3px rgba(23, 107, 86, .12); }
+      select.control { width: 180px; }
+
+      .summary { display: flex; justify-content: space-between; padding: 11px 2px; color: #738078; font-size: 12px; }
+      .table-frame { overflow: hidden; border: 1px solid #dce1d9; border-radius: 7px; background: #fff; }
+      table { width: 100%; border-collapse: collapse; text-align: left; }
+      th { height: 42px; padding: 0 18px; background: #f8f9f6; color: #738078; font-size: 10px; letter-spacing: .9px; text-transform: uppercase; }
+      td { height: 61px; padding: 0 18px; border-top: 1px solid #edf0eb; font-size: 13px; }
+      .product-name { font-weight: 700; }
+      .code { color: #176b56; font-family: Consolas, monospace; font-size: 12px; font-weight: 700; }
+      .category { color: #65736b; }
+      .status { display: inline-flex; align-items: center; gap: 6px; color: #22664b; font-size: 12px; }
+      .status::before { width: 6px; height: 6px; border-radius: 50%; background: #42a36f; content: ""; }
+      .empty { padding: 35px 16px; color: #738078; text-align: center; }
+
+      dialog {
+        width: min(420px, calc(100% - 32px));
+        padding: 0;
+        border: 1px solid #dce1d9;
+        border-radius: 8px;
+        box-shadow: 0 18px 60px rgba(21, 41, 33, .2);
+      }
+      dialog::backdrop { background: rgba(16, 34, 27, .35); }
+      .dialog-content { padding: 23px; }
+      .dialog-heading { display: flex; align-items: start; justify-content: space-between; margin-bottom: 20px; }
+      h2 { margin: 0; font-size: 20px; }
+      .close-button { border: 0; background: transparent; color: #69766e; cursor: pointer; font-size: 21px; line-height: 1; }
+      label { display: block; margin: 14px 0 6px; color: #526058; font-size: 12px; font-weight: 700; }
+      .dialog-actions { display: flex; justify-content: end; gap: 9px; margin-top: 22px; }
+      .secondary-button { min-height: 40px; padding: 0 13px; border: 1px solid #d9dfd8; border-radius: 6px; background: white; color: #34433b; cursor: pointer; }
+
+      @media (max-width: 640px) {
+        .shell { width: min(100% - 28px, 1080px); }
+        header { min-height: 64px; }
+        .header-note { display: none; }
+        main { padding-top: 32px; }
+        .intro { align-items: start; flex-direction: column; }
+        .toolbar { flex-direction: column; }
+        select.control { width: 100%; }
+        .table-frame { overflow-x: auto; }
+        table { min-width: 580px; }
+      }

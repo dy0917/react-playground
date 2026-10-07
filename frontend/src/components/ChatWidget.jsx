@@ -8,8 +8,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import usePreviewContext from '../contexts/usePreviewContext'
 
 function ChatWidget({ onGenerated }) {
+  const { dispatch } = usePreviewContext()
   const [isOpen, setIsOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
@@ -183,10 +185,9 @@ function ChatWidget({ onGenerated }) {
             <Typography sx={{ fontSize: 13, lineHeight: 1.5 }}>{item.text}</Typography>
             {item.url && (
               <Typography
-                component="a"
-                href={item.url}
-                target="_blank"
-                rel="noreferrer"
+                component="button"
+                type="button"
+                onClick={() => dispatch({ type: 'open-generated', url: item.url })}
                 sx={{
                   display: 'inline-block',
                   mt: 0.5,
@@ -194,6 +195,10 @@ function ChatWidget({ onGenerated }) {
                   fontSize: 13,
                   fontWeight: 700,
                   textDecoration: 'underline',
+                  border: 0,
+                  padding: 0,
+                  background: 'none',
+                  cursor: 'pointer',
                 }}
               >
                 Open generated page
