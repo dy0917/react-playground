@@ -52,11 +52,14 @@ function App() {
   }
 
   const handleGenerated = (generatedFiles) => {
-    const fileContents = {
-      'product-html': generatedFiles.html,
-      'product-css': generatedFiles.css,
-      'product-js': generatedFiles.js,
+    const fileIdsByPath = {
+      'index.html': 'product-html',
+      'styles.css': 'product-css',
+      'app.js': 'product-js',
     }
+    const fileContents = Object.fromEntries(
+      generatedFiles.map((file) => [fileIdsByPath[file.path], file.content]),
+    )
 
     setFiles((currentFiles) =>
       currentFiles.map((file) =>

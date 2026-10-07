@@ -1,8 +1,8 @@
 import OpenAI from 'openai'
+import { bedrock } from 'openai/providers/bedrock/aws'
 import { Buffer } from 'node:buffer'
 import process from 'node:process'
-
-const maxGeneratedBytes = 512 * 1024
+import { normalizeGeneratedFiles } from './generatedFiles.js'
 
 function createHttpError(statusCode, message) {
   const error = new Error(message)
@@ -26,9 +26,34 @@ function getBedrockBaseURL() {
   return `https://bedrock-mantle.${region}.api.aws/v1`
 }
 
+function getProfileBedrockBaseURL() {
+  const legacyAnthropicBaseURL = process.env.ANTHROPIC_BASE_URL
+  const configuredBaseURL = process.env.OPENAI_BASE_URL
+    || (legacyAnthropicBaseURL
+      ? legacyAnthropicBaseURL.replace(/\/anthropic\/?$/, '/v1')
+      : undefined)
+  if (!configuredBaseURL) return undefined
+
+  const url = new URL(configuredBaseURL)
+  if (url.hostname.startsWith('bedrock-mantle.') && url.pathname.replace(/\/$/, '') === '/v1') {
+    url.pathname = '/openai/v1'
+  }
+  return url.toString().replace(/\/$/, '')
+}
+
 function parseGeneratedFiles(responseText) {
+  const trimmedResponse = responseText.trim()
+  console.log('Raw response from Amazon Bedrock:', trimmedResponse)
+  const rawResponsePrefix = 'Raw response from Amazon Bedrock:'
+  const jsonText = trimmedResponse.startsWith(rawResponsePrefix)
+    ? trimmedResponse.slice(rawResponsePrefix.length).trim()
+    : trimmedResponse
+
   try {
-    return JSON.parse(responseText)
+
+    const parsed = JSON.parse(jsonText)
+    console.log(parsed)
+    return parsed
   } catch {
     const files = {}
     const fileHeadingPattern = /^\s*#{1,6}\s*.*?(?:\*\*)?`?(index\.html|style\.css|styles\.css|script\.js|app\.js)`?(?:\*\*)?\s*$/gim
@@ -79,21 +104,36 @@ function parseGeneratedFiles(responseText) {
 }
 
 export async function generatePageWithOpenAI(requirement, systemPrompt) {
-  const apiKey = process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY
-  if (!apiKey) {
-    throw createHttpError(503, 'Set OPENAI_API_KEY in backend/.env to use Amazon Bedrock.')
+  const awsProfile = process.env.AWS_PROFILE?.trim()
+  const model = process.env.OPENAI_MODEL || process.env.ANTHROPIC_MODEL || 'openai.gpt-oss-120b'
+  const usesGlobalInferenceProfile = model.startsWith('global.')
+  let authentication
+  if (awsProfile) {
+    authentication = {
+      provider: bedrock({
+        profile: awsProfile,
+        region: process.env.AWS_REGION,
+        ...(usesGlobalInferenceProfile
+          ? { endpoint: 'runtime', baseURL: null }
+          : { baseURL: getProfileBedrockBaseURL() }),
+      }),
+    }
+  } else {
+    const apiKey = process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY
+    if (!apiKey) {
+      throw createHttpError(503, 'Set OPENAI_API_KEY in backend/.env to use Amazon Bedrock.')
+    }
+    authentication = { apiKey, baseURL: getBedrockBaseURL() }
   }
 
   const workspaceId = process.env.OPENAI_WORKSPACE_ID || process.env.ANTHROPIC_WORKSPACE_ID
   const client = new OpenAI({
-    apiKey,
-    baseURL: getBedrockBaseURL(),
+    ...authentication,
     timeout: 90_000,
     ...(workspaceId
       ? { defaultHeaders: { 'openai-project': workspaceId } }
       : {}),
   })
-  const model = process.env.OPENAI_MODEL || process.env.ANTHROPIC_MODEL || 'openai.gpt-oss-120b'
   let responseText = ''
 
   try {
@@ -102,7 +142,7 @@ export async function generatePageWithOpenAI(requirement, systemPrompt) {
         model,
         instructions: systemPrompt,
         input: requirement,
-        max_output_tokens: 4096,
+        max_output_tokens: 16384,
         stream: true,
       },
       { signal: AbortSignal.timeout(90_000) },
@@ -116,6 +156,10 @@ export async function generatePageWithOpenAI(requirement, systemPrompt) {
       } else if (event.type === 'response.failed') {
         const message = event.response.error?.message || 'The model response failed.'
         throw createHttpError(502, `Amazon Bedrock request failed: ${message}`)
+      } else if (event.type === 'response.incomplete') {
+        const reason = event.response.incomplete_details?.reason
+        const detail = reason ? ` (${reason})` : ''
+        throw createHttpError(502, `Amazon Bedrock returned an incomplete response${detail}. Please retry.`)
       }
     }
   } catch (cause) {
@@ -129,37 +173,28 @@ export async function generatePageWithOpenAI(requirement, systemPrompt) {
   }
 
   responseText = responseText.trim()
+
   if (!responseText) {
     throw new Error('Amazon Bedrock returned an empty page. Please try a more specific requirement.')
   }
 
-  let files
+  let generatedFiles
   try {
-    files = parseGeneratedFiles(responseText)
+    generatedFiles = normalizeGeneratedFiles(parseGeneratedFiles(responseText))
+    console.log('Raw response from Amazon Bedrock:', responseText)
   } catch (cause) {
     const message = cause instanceof Error ? cause.message : 'Unknown response format'
     throw new Error(`Amazon Bedrock returned an invalid page response: ${message}`, { cause })
   }
+  console.log('Parsed response from Amazon Bedrock:', generatedFiles)
 
-  if (
-    !files ||
-    typeof files !== 'object' ||
-    Array.isArray(files) ||
-    ['html', 'css', 'js'].some((field) => typeof files[field] !== 'string')
-  ) {
-    throw new Error('Amazon Bedrock did not return all required page files. Please try again.')
-  }
-
-  const generatedBytes = Buffer.byteLength(files.html) +
-    Buffer.byteLength(files.css) +
-    Buffer.byteLength(files.js)
-  if (generatedBytes > maxGeneratedBytes) {
-    throw new Error('The generated page is too large. Please use a shorter requirement.')
-  }
-
-  const html = files.html
-    .replace(/(\bhref\s*=\s*)(["'])\.?\/?style\.css\2/gi, '$1$2./styles.css$2')
-    .replace(/(\bsrc\s*=\s*)(["'])\.?\/?script\.js\2/gi, '$1$2./app.js$2')
-
-  return { html, css: files.css, js: files.js }
+  return generatedFiles.map((file) => {
+    if (file.path !== 'index.html') return file
+    return {
+      ...file,
+      content: file.content
+        .replace(/(\bhref\s*=\s*)(["'])\.?\/?style\.css\2/gi, '$1$2./styles.css$2')
+        .replace(/(\bsrc\s*=\s*)(["'])\.?\/?script\.js\2/gi, '$1$2./app.js$2'),
+    }
+  })
 }
