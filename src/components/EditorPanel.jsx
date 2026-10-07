@@ -161,7 +161,7 @@ function EditorPanel({
               '&:hover': { background: '#6d28d9' },
             }}
           >
-            Run
+            Save & Run
           </Button>
         </Grid>
 

@@ -5,6 +5,9 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const fileMap = {
+  'product-html': 'productCodeStore/index.html',
+  'product-css': 'productCodeStore/styles.css',
+  'product-js': 'productCodeStore/app.js',
   app: 'src/components/Product/App.jsx',
   data: 'src/components/Product/data.js',
   styles: 'src/components/Product/styles.css',
