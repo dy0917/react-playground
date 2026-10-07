@@ -4,7 +4,7 @@ function ProductPreview({ version }) {
       <div className="product-window" style={{ width: '100%', height: '100%', minHeight: 0, borderRadius: 0 }}>
         <iframe
           title="Product catalog preview"
-          src={`/productCodeStore/index.html?v=${version}`}
+          src={`http://localhost:5500/productCodeStore/index.html?v=${encodeURIComponent(version)}`}
           style={{
             display: 'block',
             width: '100%',

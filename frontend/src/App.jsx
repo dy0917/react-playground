@@ -3,9 +3,9 @@ import { Grid, Paper } from '@mui/material'
 import EditorPanel from './components/EditorPanel'
 import ProductPreview from './components/ProductPreview'
 import ChatWidget from './components/ChatWidget'
-import htmlSource from '../productCodeStore/index.html?raw'
-import stylesSource from '../productCodeStore/styles.css?raw'
-import scriptSource from '../productCodeStore/app.js?raw'
+import htmlSource from '../../productCodeStore/index.html?raw'
+import stylesSource from '../../productCodeStore/styles.css?raw'
+import scriptSource from '../../productCodeStore/app.js?raw'
 
 const initialFiles = [
   {
