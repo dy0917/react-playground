@@ -31,6 +31,33 @@ function parseGeneratedFiles(responseText) {
     return JSON.parse(responseText)
   } catch {
     const files = {}
+    const fileHeadingPattern = /^\s*#{1,6}\s*.*?(?:\*\*)?`?(index\.html|style\.css|styles\.css|script\.js|app\.js)`?(?:\*\*)?\s*$/gim
+    const headings = [...responseText.matchAll(fileHeadingPattern)]
+
+    for (let index = 0; index < headings.length; index += 1) {
+      const heading = headings[index]
+      const sectionStart = heading.index + heading[0].length
+      const sectionEnd = headings[index + 1]?.index ?? responseText.length
+      const section = responseText.slice(sectionStart, sectionEnd)
+      const codeBlock = section.match(/```(?:html|css|javascript|js)?\s*\r?\n([\s\S]*?)\r?\n```/i)
+      if (!codeBlock) continue
+
+      const fileName = heading[1].toLowerCase()
+      const field = fileName === 'index.html'
+        ? 'html'
+        : fileName === 'style.css' || fileName === 'styles.css'
+          ? 'css'
+          : 'js'
+      if (files[field] !== undefined) {
+        throw new Error(`The response contains multiple ${field.toUpperCase()} file sections.`)
+      }
+      files[field] = codeBlock[1]
+    }
+
+    if (['html', 'css', 'js'].every((field) => typeof files[field] === 'string')) {
+      return files
+    }
+
     const codeBlockPattern = /```(html|css|javascript|js)\s*\r?\n([\s\S]*?)\r?\n```/gi
     let match
 
@@ -111,7 +138,7 @@ export async function generatePageWithOpenAI(requirement, systemPrompt) {
     files = parseGeneratedFiles(responseText)
   } catch (cause) {
     const message = cause instanceof Error ? cause.message : 'Unknown response format'
-    throw new Error(`Amazon Bedrock returned an invalid page response: ${message}`)
+    throw new Error(`Amazon Bedrock returned an invalid page response: ${message}`, { cause })
   }
 
   if (
