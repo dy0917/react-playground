@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Grid, Paper } from '@mui/material'
 import EditorPanel from './components/EditorPanel'
 import ProductPreview from './components/ProductPreview'
+import ChatWidget from './components/ChatWidget'
 import htmlSource from '../productCodeStore/index.html?raw'
 import stylesSource from '../productCodeStore/styles.css?raw'
 import scriptSource from '../productCodeStore/app.js?raw'
@@ -37,6 +38,7 @@ function App() {
   const [files, setFiles] = useState(initialFiles)
   const [activeFileId, setActiveFileId] = useState('product-html')
   const [openTabs, setOpenTabs] = useState(['product-html', 'product-css', 'product-js'])
+  const [previewVersion, setPreviewVersion] = useState(0)
 
   const activeFile = files.find((file) => file.id === activeFileId) || files[0]
 
@@ -46,6 +48,23 @@ function App() {
         file.id === fileId ? { ...file, content: value } : file,
       ),
     )
+  }
+
+  const handleGenerated = (generatedFiles) => {
+    const fileContents = {
+      'product-html': generatedFiles.html,
+      'product-css': generatedFiles.css,
+      'product-js': generatedFiles.js,
+    }
+
+    setFiles((currentFiles) =>
+      currentFiles.map((file) =>
+        Object.hasOwn(fileContents, file.id)
+          ? { ...file, content: fileContents[file.id] }
+          : file,
+      ),
+    )
+    setPreviewVersion((version) => version + 1)
   }
 
   const openFile = (fileId) => {
@@ -159,10 +178,12 @@ function App() {
               boxShadow: '0 12px 30px rgba(15,23,42,0.08)',
             }}
           >
-            <ProductPreview />
+            <ProductPreview version={previewVersion} />
           </Grid>
         </Paper>
       </Grid>
+
+      <ChatWidget onGenerated={handleGenerated} />
     </Grid>
   )
 }
