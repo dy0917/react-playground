@@ -3,127 +3,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A simple, modern website for Bright Studio.">
-  <title>Bright Studio</title>
+  <meta name="description" content="A simple, thoughtfully designed landing page for Brightside Studio.">
+  <title>Brightside Studio</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" defer></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="#home" aria-label="Bright Studio home">
-      <span class="logo-mark" aria-hidden="true">B</span>
-      <span>Bright</span>
-    </a>
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" aria-label="Brightside Studio home">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span>Brightside</span>
+      </a>
 
-    <button class="menu-button" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-    <nav class="site-nav" id="site-nav" aria-label="Main navigation">
-      <a href="#home">Home</a>
-      <a href="#services">Services</a>
-      <a href="#about">About</a>
-      <a class="nav-cta" href="#contact">Let's talk</a>
-    </nav>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark theme">
+          <span class="theme-icon" aria-hidden="true">☾</span>
+        </button>
+      </nav>
+    </div>
   </header>
 
   <main>
     <section class="hero" id="home">
-      <div class="hero-content reveal">
-        <p class="eyebrow"><span></span> Thoughtful digital design</p>
-        <h1>Simple ideas.<br><em>Bright</em> results.</h1>
-        <p class="hero-copy">We create focused, beautiful digital experiences that help small brands stand out and move forward.</p>
-        <div class="hero-actions">
-          <a class="button primary-button" href="#services">Explore our work</a>
-          <button class="text-button" type="button" id="story-button">Our story <span aria-hidden="true">→</span></button>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Independent creative studio</p>
+          <h1>Simple ideas,<br><span>beautifully made.</span></h1>
+          <p class="hero-text">We help thoughtful brands turn good ideas into clear, memorable digital experiences.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#contact">Start a project <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="#services">See what we do</a>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-label="Abstract creative illustration">
+          <div class="art-card">
+            <span class="art-label">Make it clear.</span>
+            <div class="art-circle"></div>
+            <div class="art-spark art-spark-one">✦</div>
+            <div class="art-spark art-spark-two">✦</div>
+            <div class="art-lines">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="hero-visual reveal" aria-hidden="true">
-        <div class="orb orb-one"></div>
-        <div class="orb orb-two"></div>
-        <div class="visual-card card-back">
-          <span>Explore</span>
-          <strong>Ideas that<br>feel alive.</strong>
+    <section class="about section" id="about">
+      <div class="container section-grid">
+        <div>
+          <p class="section-number">01 / About</p>
+          <h2>Small studio.<br>Big attention to detail.</h2>
         </div>
-        <div class="visual-card card-front">
-          <div class="mini-brand"><span>B</span> Bright</div>
-          <div class="abstract-shape"></div>
-          <p>Make something<br><strong>remarkable.</strong></p>
+        <div class="about-copy">
+          <p>Brightside is a small creative studio focused on making the complex feel simple. We combine strategy, design, and a little curiosity to build work that feels useful and human.</p>
+          <div class="stats" aria-label="Studio statistics">
+            <div><strong>8+</strong><span>Years creating</span></div>
+            <div><strong>42</strong><span>Happy clients</span></div>
+            <div><strong>100%</strong><span>Independent</span></div>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="services section" id="services">
-      <div class="section-heading reveal">
-        <p class="eyebrow"><span></span> What we do</p>
-        <h2>Less noise.<br>More meaning.</h2>
-        <p>Everything you need to turn a good idea into a clear, memorable experience.</p>
-      </div>
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="section-number">02 / Services</p>
+            <h2>How we can help.</h2>
+          </div>
+          <p>Focused services for brands with something meaningful to say.</p>
+        </div>
 
-      <div class="service-grid">
-        <article class="service-card reveal">
-          <span class="service-number">01</span>
-          <div class="service-icon" aria-hidden="true">✦</div>
-          <h3>Brand direction</h3>
-          <p>Clear visual systems and strong identities built around what makes you different.</p>
-        </article>
-        <article class="service-card reveal">
-          <span class="service-number">02</span>
-          <div class="service-icon" aria-hidden="true">◫</div>
-          <h3>Web design</h3>
-          <p>Responsive, intuitive websites that look beautiful and make every click count.</p>
-        </article>
-        <article class="service-card reveal">
-          <span class="service-number">03</span>
-          <div class="service-icon" aria-hidden="true">↗</div>
-          <h3>Digital growth</h3>
-          <p>Practical strategy and thoughtful content that help your next chapter take shape.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="about section" id="about">
-      <div class="about-panel reveal">
-        <p class="eyebrow light"><span></span> Small studio, big care</p>
-        <h2>Built for people who care about the details.</h2>
-        <p>Bright is an independent creative studio that believes the simplest solution is often the strongest. We listen closely, work collaboratively, and make every detail earn its place.</p>
-        <a href="#contact" class="button light-button">Start a project</a>
-      </div>
-      <div class="about-note reveal">
-        <span class="quote-mark">“</span>
-        <blockquote>Great design should feel obvious once you see it.</blockquote>
-        <p>That idea guides everything we make.</p>
+        <div class="service-list">
+          <article class="service-card">
+            <span class="service-index">01</span>
+            <div>
+              <h3>Brand strategy</h3>
+              <p>Positioning, voice, and a clear plan for showing up with purpose.</p>
+            </div>
+            <span class="service-arrow" aria-hidden="true">↗</span>
+          </article>
+          <article class="service-card">
+            <span class="service-index">02</span>
+            <div>
+              <h3>Visual identity</h3>
+              <p>Flexible identity systems that make your brand instantly recognizable.</p>
+            </div>
+            <span class="service-arrow" aria-hidden="true">↗</span>
+          </article>
+          <article class="service-card">
+            <span class="service-index">03</span>
+            <div>
+              <h3>Web design</h3>
+              <p>Responsive, approachable websites designed around real people.</p>
+            </div>
+            <span class="service-arrow" aria-hidden="true">↗</span>
+          </article>
+        </div>
       </div>
     </section>
 
     <section class="contact section" id="contact">
-      <div class="contact-inner reveal">
-        <p class="eyebrow"><span></span> Have a project in mind?</p>
-        <h2>Let's make it <em>bright.</em></h2>
-        <p>Tell us a little about your idea and we’ll get back to you soon.</p>
-        <a class="button primary-button" href="mailto:hello@brightstudio.example">hello@brightstudio.example</a>
+      <div class="container contact-card">
+        <div>
+          <p class="section-number">03 / Say hello</p>
+          <h2>Have a bright idea?</h2>
+          <p>Tell us a little about it. We’ll get back to you within two working days.</p>
+        </div>
+        <form class="contact-form" id="contact-form">
+          <label for="email">Your email</label>
+          <div class="form-row">
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            <button class="button button-dark" type="submit">Let's talk <span aria-hidden="true">→</span></button>
+          </div>
+          <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+        </form>
       </div>
     </section>
   </main>
 
-  <footer>
-    <a class="logo" href="#home"><span class="logo-mark">B</span><span>Bright</span></a>
-    <p>© <span id="year"></span> Bright Studio. Made with care.</p>
-    <a href="#home" class="back-top">Back to top ↑</a>
-  </footer>
-
-  <div class="modal" id="story-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
-    <div class="modal-backdrop" data-close-modal></div>
-    <div class="modal-content">
-      <button class="modal-close" type="button" aria-label="Close dialog" data-close-modal>×</button>
-      <p class="eyebrow"><span></span> Our story</p>
-      <h2 id="modal-title">Small by choice.<br>Curious by nature.</h2>
-      <p>Bright began with one simple belief: good creative work comes from clarity, curiosity, and close collaboration. We partner with thoughtful people to make useful things feel special.</p>
-      <a class="button primary-button" href="#contact" data-close-modal>Work with us</a>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand" href="#home">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span>Brightside</span>
+      </a>
+      <p>© <span id="year"></span> Brightside Studio</p>
+      <a class="back-to-top" href="#home">Back to top ↑</a>
     </div>
-  </div>
+  </footer>
 </body>
 </html>

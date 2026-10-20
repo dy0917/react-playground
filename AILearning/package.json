@@ -1,0 +1,17 @@
+{
+  "name": "ailearning",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.14.0",
+    "openai": "^7.34.0"
+  }
+}
