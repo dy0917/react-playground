@@ -43,7 +43,6 @@ function getProfileBedrockBaseURL() {
 
 function parseGeneratedFiles(responseText) {
   const trimmedResponse = responseText.trim()
-  console.log('Raw response from Amazon Bedrock:', trimmedResponse)
   const rawResponsePrefix = 'Raw response from Amazon Bedrock:'
   const jsonText = trimmedResponse.startsWith(rawResponsePrefix)
     ? trimmedResponse.slice(rawResponsePrefix.length).trim()
@@ -52,7 +51,6 @@ function parseGeneratedFiles(responseText) {
   try {
 
     const parsed = JSON.parse(jsonText)
-    console.log(parsed)
     return parsed
   } catch {
     const files = {}
